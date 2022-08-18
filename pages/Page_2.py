@@ -46,8 +46,8 @@ def load_model():
     
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
-    state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t')
-
+    # state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t')
+    state_dict = torch.hub.load_state_dict_from_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t')
     # state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
 
     model.load_state_dict(state_dict['net'])
