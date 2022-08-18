@@ -144,25 +144,25 @@ if image_file is not None:
 PATH = r"C:\img.jpg"
 if st.button('분석하기'):
     model = load_model()
-    vali_dataset = CustomDataset(PATH,[0], train_mode=True, transforms=albumentations_test)
-    vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    score0 = test(model, vali_loader)
-    vali_dataset = CustomDataset(PATH,[1], train_mode=True, transforms=albumentations_test)
-    vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    score1 = test(model, vali_loader)
-    vali_dataset = CustomDataset(PATH,[2], train_mode=True, transforms=albumentations_test)
-    vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    score2 = test(model, vali_loader)
+    # vali_dataset = CustomDataset(PATH,[0], train_mode=True, transforms=albumentations_test)
+    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
+    # score0 = test(model, vali_loader)
+    # vali_dataset = CustomDataset(PATH,[1], train_mode=True, transforms=albumentations_test)
+    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
+    # score1 = test(model, vali_loader)
+    # vali_dataset = CustomDataset(PATH,[2], train_mode=True, transforms=albumentations_test)
+    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
+    # score2 = test(model, vali_loader)
 
-    if max(score0,score1,score2) == score0:
-        st.write("")
-        st.write("## 🏢 전시 입니다.")
-    elif max(score0,score1,score2) == score1:
-        st.write("")
-        st.write("## 🏢 야외 입니다.")
-    elif max(score0,score1,score2) == score2:
-        st.write("")
-        st.write("## 🏢 체험 입니다.")
+    # if max(score0,score1,score2) == score0:
+    #     st.write("")
+    #     st.write("## 🏢 전시 입니다.")
+    # elif max(score0,score1,score2) == score1:
+    #     st.write("")
+    #     st.write("## 🏢 야외 입니다.")
+    # elif max(score0,score1,score2) == score2:
+    #     st.write("")
+    #     st.write("## 🏢 체험 입니다.")
 
     # st.write("결과")
     
