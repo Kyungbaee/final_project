@@ -1,0 +1,10 @@
+datasets
+os
+streamlit
+torch
+pandas
+transformers
+keras
+tensorflow
+albumentations
+torchvision
