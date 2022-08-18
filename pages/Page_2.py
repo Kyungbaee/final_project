@@ -128,11 +128,11 @@ if image_file is not None:
     img = Image.open(image_file)
 
     if image_file.name[-3:] == "png":
-        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","png")
+        img.save(r"C:\img.jpg","png")
     elif (image_file.name[-3:] == "jpg"):
-        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","jpg")
+        img.save(r"C:\img.jpg","jpg")
     else :
-        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","jpeg")
+        img.save(r"C:\img.jpg","jpeg")
 
 if image_file is not None:
 
@@ -141,7 +141,7 @@ if image_file is not None:
 
 
 
-PATH = r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg"
+PATH = r"C:\img.jpg"
 if st.button('분석하기'):
     model = load_model()
     vali_dataset = CustomDataset(PATH,[0], train_mode=True, transforms=albumentations_test)
