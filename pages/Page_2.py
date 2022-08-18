@@ -15,7 +15,6 @@ from torch.utils.data import DataLoader
 from torch.utils.data import DataLoader, Dataset
 import albumentations
 import albumentations.pytorch
-import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
 
