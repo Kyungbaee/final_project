@@ -1,0 +1,4 @@
+weights/best_model_weight_8_16.pt filter=lfs diff=lfs merge=lfs -text
+weights/best_model_weight_8_17.pt filter=lfs diff=lfs merge=lfs -text
+weights/model_state_dict.pt filter=lfs diff=lfs merge=lfs -text
+weights/model.pt filter=lfs diff=lfs merge=lfs -text
