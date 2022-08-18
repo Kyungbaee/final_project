@@ -1,5 +1,5 @@
 import streamlit as st
-from tkinter.tix import COLUMN
+# from tkinter.tix import COLUMN
 from pyparsing import empty
 
 st.set_page_config(
