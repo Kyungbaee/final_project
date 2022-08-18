@@ -6,3 +6,4 @@ transformers
 tensorflow
 albumentations
 torchvision
+protobuf<3.20
