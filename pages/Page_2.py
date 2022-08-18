@@ -19,11 +19,27 @@ import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
 
+def add_bg_from_url():
+    st.markdown(
+         f"""
+         <style>
+         .stApp {{
+             background-image: url("https://cdn.pixabay.com/photo/2018/07/05/16/59/students-3518726_960_720.jpg");
+             background-attachment: fixed;
+             background-size: cover
+         }}
+         </style>
+         """,
+         unsafe_allow_html=True
+     )
+
+add_bg_from_url() 
+
 st.sidebar.markdown("# Seoul_Landmark Dataset ")
 
-st.sidebar.markdown("# Page 2 🏢")
+st.sidebar.markdown("# Page 2")
 
-st.markdown("# Page 2 이미지 분류 🏢")
+st.markdown("### Page 2 이미지 분류 ")
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
@@ -31,7 +47,7 @@ def load_model():
     
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
-    state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\weights\best_model_weight_8_17.pt')
+    state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
 
     model.load_state_dict(state_dict['net'])
     return model
@@ -109,7 +125,13 @@ image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
 
 if image_file is not None:
     img = Image.open(image_file)
-    img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","png")
+
+    if image_file.name[-3:] == "png":
+        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","png")
+    elif (image_file.name[-3:] == "jpg"):
+        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","jpg")
+    else :
+        img.save(r"C:\Users\pc\Desktop\streamlit\final_project\img.jpg","jpeg")
 
 if image_file is not None:
 
@@ -132,11 +154,14 @@ if st.button('분석하기'):
     score2 = test(model, vali_loader)
 
     if max(score0,score1,score2) == score0:
-        st.write("전시 입니다.")
+        st.write("")
+        st.write("## 🏢 전시 입니다.")
     elif max(score0,score1,score2) == score1:
-        st.write("야외 입니다.")
+        st.write("")
+        st.write("## 🏢 야외 입니다.")
     elif max(score0,score1,score2) == score2:
-        st.write("체험 입니다.")
+        st.write("")
+        st.write("## 🏢 체험 입니다.")
 
     # st.write("결과")
     
