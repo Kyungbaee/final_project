@@ -46,12 +46,20 @@ st.markdown("### Page 2 이미지 분류 ")
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
+# import urllib.request
+# import io
+
+# url = 'https://github.com/Kyungbaee/final_project/raw/main/weights/best_model_weight_8_17.pt'
+# res = urllib.request.urlopen(url)
+# data = res.read()
+# text = data.decode("utf-8")
+
 def load_model():
     
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
-    # state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t')
-    state_dict = torch.load('weights/best_model_weight_8_17.pt',map_location=torch.device('cpu'))
+    state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t',map_location=torch.device('cpu'))
+    # state_dict = torch.load(io.BytesIO(text.tobytes()))
     
     # state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
 
