@@ -3,7 +3,6 @@ streamlit
 torch
 pandas
 transformers
-tensorflow
 albumentations
 torchvision
 protobuf==3.19.0
