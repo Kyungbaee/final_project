@@ -46,7 +46,7 @@ def load_model():
     
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
-    state_dict = torch.load(r'weights\best_model_weight_8_17.pt')
+    state_dict = torch.load('https://drive.google.com/file/d/1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os/view?usp=sharing')
 
     # state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
 
