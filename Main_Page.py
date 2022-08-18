@@ -1,4 +1,6 @@
 import streamlit as st
+from tkinter.tix import COLUMN
+from pyparsing import empty
 
 st.set_page_config(
     page_title="Seoul_Landmark",
@@ -6,6 +8,8 @@ st.set_page_config(
     layout="wide",
 )
 
+empty1,con1 = st.columns([0.3,1.0])
+empty1,con2,con3 = st.columns([0.3,0.5,0.5])
 
 def add_bg_from_url():
     st.markdown(
@@ -23,13 +27,27 @@ def add_bg_from_url():
 
 add_bg_from_url() 
 
+def main() :
+
+    with empty1 :
+        empty() # 여백부분1
+        st.sidebar.markdown("# Seoul_Landmark Dataset ")
+        st.sidebar.markdown('# Final Project')
+        
+    with con1 :
+        st.markdown("### 랜드마크 건설! 🏢")
+        st.markdown("**초등학생**을 대상으로 한 랜드마크 **딥러닝** 이미지 분류")
+    
+    with con2 :
+        st.info(
+        '### 원본 출처: [Landmark Images Dataset link](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=56)')
+    # with con3 :
+      
+main()
 
 
 
-st.sidebar.markdown("# Seoul Landmark Dataset ")
 
-st.sidebar.markdown('# Final Project')
-st.markdown("### 랜드마크 건설! 🏢")
-st.markdown("**초등학생**을 대상으로 한 랜드마크 **딥러닝** 이미지 분류")
-st.info(
-    '### 원본 출처: [Landmark Images Dataset link](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=56)')
+
+
+

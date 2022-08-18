@@ -1,26 +1,24 @@
-from unicodedata import category
 import streamlit as st
+from tkinter.tix import COLUMN
+from pyparsing import empty
+import torch
+import torchvision
+from torchvision import models
+import torch.nn as nn
+from torch.utils.data import DataLoader 
+from torch.utils.data import DataLoader, Dataset
+import albumentations
+import albumentations.pytorch
+from PIL import Image
+import numpy
 
 st.set_page_config(
     page_title="Seoul_Landmark",
     page_icon="🗽",
     layout="wide",
 )
-
-import torch
-import torchvision
-from torchvision import models
-import torch.nn as nn
-
-from torch.utils.data import DataLoader 
-from torch.utils.data import DataLoader, Dataset
-import albumentations
-import albumentations.pytorch
-import cv2
-from PIL import Image
-
-import numpy
-
+empty1,con1 = st.columns([0.3,1.0])
+empty1,con2,con3 = st.columns([0.3,0.5,0.5])
 
 def add_bg_from_url():
     st.markdown(
@@ -38,31 +36,13 @@ def add_bg_from_url():
 
 add_bg_from_url() 
 
-st.sidebar.markdown("# Seoul_Landmark Dataset ")
-
-st.sidebar.markdown("# Page 2")
-
-st.markdown("### Page 2 이미지 분류 ")
-
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
-
-# import urllib.request
-# import io
-
-# url = 'https://github.com/Kyungbaee/final_project/raw/main/weights/best_model_weight_8_17.pt'
-# res = urllib.request.urlopen(url)
-# data = res.read()
-# text = data.decode("utf-8")
 
 def load_model():
     
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
     state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t',map_location=torch.device('cpu'))
-    # state_dict = torch.load(io.BytesIO(text.tobytes()))
-    
-    # state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
-
     model.load_state_dict(state_dict['net'])
     return model
 
@@ -98,7 +78,6 @@ class CustomDataset(Dataset):
             return image
     
     def __len__(self): 
-        # return len(self.img_path)
         return 1
 
 
@@ -121,32 +100,50 @@ def load_image(image_file):
 	img = Image.open(image_file)
 	return img
 
+def main() :
+
+    with empty1 :
+        empty() # 여백부분1
+        st.sidebar.markdown("# Seoul_Landmark Dataset ")
+        st.sidebar.markdown("# Page 2")
+        
+    with con1 :
+        st.markdown("### Page 2 이미지 분류 ")
+        image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+    
+    with con2 :
+        if image_file is not None: 
+            st.image(load_image(image_file),width=250)
+
+    with con3 :
+        if image_file is not None:
+            I = numpy.asarray(Image.open(image_file).convert("RGB"))
+
+            model = load_model()
+            vali_dataset = CustomDataset(I,[0], train_mode=True, transforms=albumentations_test)
+            vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
+
+            theme = test(model, vali_loader)
+
+            if theme == 0:
+                st.write("")
+                st.write("## 🏢 전시 입니다.")
+            elif theme == 1:
+                st.write("")
+                st.write("## 🏢 야외 입니다.")
+            elif theme == 2:
+                st.write("")
+                st.write("## 🏢 체험 입니다.")
+        
+main()
+            
+    
 
 
-image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
 
-if image_file is not None:
 
-	st.image(load_image(image_file),width=250)
 
-if image_file is not None:
-    I = numpy.asarray(Image.open(image_file).convert("RGB"))
 
-    model = load_model()
-    vali_dataset = CustomDataset(I,[0], train_mode=True, transforms=albumentations_test)
-    vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-
-    theme = test(model, vali_loader)
-
-    if theme == 0:
-        st.write("")
-        st.write("## 🏢 전시 입니다.")
-    elif theme == 1:
-        st.write("")
-        st.write("## 🏢 야외 입니다.")
-    elif theme == 2:
-        st.write("")
-        st.write("## 🏢 체험 입니다.")
     
 
     
