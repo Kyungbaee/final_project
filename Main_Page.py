@@ -1,11 +1,11 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Suoul_Landmark",
+    page_title="Seoul_Landmark",
     page_icon="🗽",
     layout="wide",
 )
-st.sidebar.markdown("# Suoul_Landmark Dataset ")
+st.sidebar.markdown("# Seoul_Landmark Dataset ")
 
 st.sidebar.markdown("# Final Project 🏢")
 

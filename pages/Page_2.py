@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Suoul_Landmark",
+    page_title="Seoul_Landmark",
     page_icon="🗽",
     layout="wide",
 )
@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
 
-st.sidebar.markdown("# Suoul_Landmark Dataset ")
+st.sidebar.markdown("# Seoul_Landmark Dataset ")
 
 st.sidebar.markdown("# Page 2 🏢")
 
