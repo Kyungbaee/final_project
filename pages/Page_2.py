@@ -1,3 +1,4 @@
+from unicodedata import category
 import streamlit as st
 
 st.set_page_config(
@@ -17,6 +18,9 @@ import albumentations
 import albumentations.pytorch
 import cv2
 from PIL import Image
+
+import numpy
+
 
 def add_bg_from_url():
     st.markdown(
@@ -47,7 +51,8 @@ def load_model():
     model = models.resnet50(pretrained=True).to(device)
     model.fc = nn.Linear(model.fc.in_features, 3).to(device)
     # state_dict = torch.utils.model_zoo.load_url('https://drive.google.com/uc?export=download&id=1-3SvCFcqdaecIZzziq6PnfFSKFj7n3Os&confirm=t')
-    state_dict = torch.hub.load('weights/best_model_weight_8_17.pt')
+    state_dict = torch.load('weights/best_model_weight_8_17.pt',map_location=torch.device('cpu'))
+    
     # state_dict = torch.load(r'C:\Users\pc\Desktop\streamlit\final_project\final_project\weights\best_model_weight_8_17.pt')
 
     model.load_state_dict(state_dict['net'])
@@ -72,12 +77,7 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, index): 
         img_path = self.img_path
-        index = 0
-
-
-        image = cv2.imread(img_path)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) 
-
+        image = img_path
 
         if self.transforms is not None:
             augmented = self.transforms(image=image)
@@ -90,15 +90,13 @@ class CustomDataset(Dataset):
             return image
     
     def __len__(self): 
-        return len(self.img_path)
+        # return len(self.img_path)
+        return 1
 
 
 def test(model, vali_loader):
     model.eval()
     with torch.no_grad():
-        correct = 0
-        total = 0
-        acc = []
 
         for k, data in enumerate(vali_loader, 0):
             images, labels = data
@@ -107,13 +105,7 @@ def test(model, vali_loader):
             outputs = model(images)
 
             _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            acc.append(100 * correct/total)
-
-        return 100 * correct/total            
-
-
+        return predicted.item()
 
 
 @st.cache
@@ -122,52 +114,31 @@ def load_image(image_file):
 	return img
 
 
+
 image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
-
-if image_file is not None:
-    img = Image.open(image_file)
-
-    if image_file.name[-3:] == "png":
-        img.save(r"C:\img.jpg","png")
-    elif (image_file.name[-3:] == "jpg"):
-        img.save(r"C:\img.jpg","jpg")
-    else :
-        img.save(r"C:\img.jpg","jpeg")
 
 if image_file is not None:
 
 	st.image(load_image(image_file),width=250)
-    
 
+if image_file is not None:
+    I = numpy.asarray(Image.open(image_file).convert("RGB"))
 
-
-PATH = r"C:\img.jpg"
-if st.button('분석하기'):
     model = load_model()
-    # vali_dataset = CustomDataset(PATH,[0], train_mode=True, transforms=albumentations_test)
-    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    # score0 = test(model, vali_loader)
-    # vali_dataset = CustomDataset(PATH,[1], train_mode=True, transforms=albumentations_test)
-    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    # score1 = test(model, vali_loader)
-    # vali_dataset = CustomDataset(PATH,[2], train_mode=True, transforms=albumentations_test)
-    # vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
-    # score2 = test(model, vali_loader)
+    vali_dataset = CustomDataset(I,[0], train_mode=True, transforms=albumentations_test)
+    vali_loader = DataLoader(vali_dataset, batch_size = 16, shuffle=False, num_workers=0)
 
-    # if max(score0,score1,score2) == score0:
-    #     st.write("")
-    #     st.write("## 🏢 전시 입니다.")
-    # elif max(score0,score1,score2) == score1:
-    #     st.write("")
-    #     st.write("## 🏢 야외 입니다.")
-    # elif max(score0,score1,score2) == score2:
-    #     st.write("")
-    #     st.write("## 🏢 체험 입니다.")
+    theme = test(model, vali_loader)
 
-    # st.write("결과")
-    
-    # st.write(image_file.name)
-    # plt.imshow(vali_dataset.__getitem__(0))
+    if theme == 0:
+        st.write("")
+        st.write("## 🏢 전시 입니다.")
+    elif theme == 1:
+        st.write("")
+        st.write("## 🏢 야외 입니다.")
+    elif theme == 2:
+        st.write("")
+        st.write("## 🏢 체험 입니다.")
     
 
     
